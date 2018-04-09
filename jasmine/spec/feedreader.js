@@ -31,30 +31,72 @@ $(function() {
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
          */
+         it('all feeds have a URL defined and that the URL is not empty.', function(){
+            allFeeds.forEach(function(element){
+                expect(element.url).toBeDefined();
+                expect(element.url).not.toBe("");
+            });
+         });
 
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
+         it('all feeds have a name defined and that the name is not empty.', function(){
+            allFeeds.forEach(function(element){
+                expect(element.name).toBeDefined();
+                expect(element.name).not.toBe("");
+            });
+         });
     });
 
 
     /* TODO: Write a new test suite named "The menu" */
+    describe('The menu', function(){
 
         /* TODO: Write a test that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
+         it('the menu element is hidden by default.', function(){
+            const elements = document.getElementsByTagName('body');
+            const menuHidden = elements[0].className;
+            expect(menuHidden).toBe("menu-hidden");
+         });
 
          /* TODO: Write a test that ensures the menu changes
           * visibility when the menu icon is clicked. This test
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
+          it('the menu element changes visibility when the menu icon is clicked.', function(){
+            let elements = document.getElementsByTagName('body');
+            let menuHidden = elements[0].className;
+            expect(menuHidden).toBe("menu-hidden");
+
+            const iconList = document.querySelector('.icon-list');
+
+            iconList.click();
+            elements = document.getElementsByTagName('body');
+            menuHidden = elements[0].className;
+            expect(menuHidden).toBe("");
+
+            iconList.click();
+            elements = document.getElementsByTagName('body');
+            menuHidden = elements[0].className;
+            expect(menuHidden).toBe("menu-hidden");
+         });
+
+    });
 
     /* TODO: Write a new test suite named "Initial Entries" */
+    describe('Initial Entries', function(){
+
+        beforeEach(function(done){
+            loadFeed(0, done);
+        });
 
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
@@ -62,11 +104,36 @@ $(function() {
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+         it('the loadFeed function is called and completes its work, there is at least a single .entry element within the .feed container.', function(done){
+            const feedContainer = document.getElementsByClassName('feed')[0];
+            expect(feedContainer.childNodes.length).not.toBe(0);
+            done();
+         });
+
+
+    });
 
     /* TODO: Write a new test suite named "New Feed Selection" */
+
+    describe('New Feed Selection', function(){
+
+        let oldContent, newContent;
+
+        beforeEach(function(done){
+            oldContent = document.getElementsByClassName('feed')[0].innerHTML;
+            loadFeed(1, done);
+        });
 
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+         it('a new feed is loaded by the loadFeed function that the content actually changes', function(done){
+            newContent = document.getElementsByClassName('feed')[0].innerHTML;
+            expect(oldContent).not.toBe(newContent);
+            done();
+         });
+
+    });
+
 }());
