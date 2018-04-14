@@ -105,7 +105,7 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
          it('the loadFeed function is called and completes its work, there is at least a single .entry element within the .feed container.', function(done){
-            const feedChild = $('.feed').children();
+            const feedChild = $('.feed > .entry-link');
             expect(feedChild.length).not.toBe(0);
             const feedChildExist = feedChild.hasClass('entry-link');
             expect(feedChildExist).toBe(true);
@@ -122,8 +122,13 @@ $(function() {
         let oldContent, newContent;
 
         beforeEach(function(done){
-            oldContent = document.getElementsByClassName('feed')[0].innerHTML;
-            loadFeed(1, done);
+            loadFeed(0, function(){
+                oldContent = document.getElementsByClassName('feed')[0].innerHTML;
+                loadFeed(1, function(){
+                    ewContent = document.getElementsByClassName('feed')[0].innerHTML;
+                    done();
+                });
+            });
         });
 
         /* A test that ensures when a new feed is loaded
