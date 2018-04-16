@@ -124,7 +124,10 @@ $(function() {
         beforeEach(function(done){
             loadFeed(0, function(){
                 oldContent = document.getElementsByClassName('feed')[0].innerHTML;
-                done();
+                loadFeed(1, function(){
+                    newContent = document.getElementsByClassName('feed')[0].innerHTML;
+                    done();
+                });
             });
         });
 
@@ -133,11 +136,8 @@ $(function() {
          * Remember, loadFeed() is asynchronous.
          */
          it('a new feed is loaded by the loadFeed function that the content actually changes', function(done){
-            loadFeed(1, function(){
-                newContent = document.getElementsByClassName('feed')[0].innerHTML;
-                expect(oldContent).not.toBe(newContent);
-                done();
-            });
+            expect(oldContent).not.toBe(newContent);
+            done();
          });
 
     });
